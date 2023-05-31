@@ -3,11 +3,11 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Reversi extends JPanel {
-    static final int WIDTH = 500; // 画面サイズ（幅）
-    static final int HEIGHT = 550; // 画面サイズ（高さ）
-    int lm = 50; // 左側余白
-    int tm = 100; // 上側余白
-    int cs = 50; // マスのサイズ
+    static final int WIDTH = 1000; // 画面サイズ（幅）
+    static final int HEIGHT = 1100; // 画面サイズ（高さ）
+    int lm = 100; // 左側余白
+    int tm = 200; // 上側余白
+    int cs = 100; // マスのサイズ
     int turn = 1; // 手番（1:黒，2:白)
 
     int ban[][] = {
