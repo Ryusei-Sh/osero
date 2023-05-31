@@ -43,7 +43,7 @@ public class Reversi extends JPanel {
             g.setColor(Color.white);
         }
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
-        g.drawString(turnInfo, 30, 100);
+        g.drawString(turnInfo, 50, 150);
 
         // 盤面描画
         for (int i = 0; i < 8; i++) {
@@ -64,11 +64,15 @@ public class Reversi extends JPanel {
                     }
                     g.fillOval(x + cs / 10, y + cs / 10, cs * 8 / 10, cs * 8 / 10);
                 }
-                if (ban[i][j] == 0 && canPlace(i, j)) {
-                    // 相手の石をひっくり返せるマスに「＊」マークを表示
-                    g.setColor(Color.WHITE);
+                // 自分のターンの時に相手の石をひっくり返せるマスに「○」マークを表示
+                if (canPlace(i, j) && ban[i][j] == 0) {
+                    if (turn == 1) {
+                        g.setColor(Color.black);
+                    } else if (turn == 2) {
+                        g.setColor(Color.white);
+                    }
                     g.setFont(new Font("SansSerif", Font.BOLD, 30));
-                    g.drawString("＊", x + cs / 2 - 10, y + cs / 2 + 10);
+                    g.drawString("○", x + cs / 2 - 10, y + cs / 2 + 15);
                 }
             }
         }
