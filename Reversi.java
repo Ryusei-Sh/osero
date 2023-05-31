@@ -56,6 +56,17 @@ public class Reversi extends JPanel {
         }
     }
 
+    // 石を挟む方向に対する座標の変化量を表すクラス
+    class Direction {
+        int dx;
+        int dy;
+
+        Direction(int dx, int dy) {
+            this.dx = dx;
+            this.dy = dy;
+        }
+    }
+
     // クリックされた時の処理用のクラス
     class MouseProc extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
@@ -72,15 +83,48 @@ public class Reversi extends JPanel {
             int row = (y - tm) / cs;
 
             if (ban[col][row] == 0) {
-                // 黒コマを置く
+                // 石を置く
                 ban[col][row] = turn;
 
-                // 手番の変更
-                if (turn == 1) {
-                    turn = 2;
-                } else {
-                    turn = 1;
+                // 石を挟む方向の定義
+                Direction[] directions = {
+                    new Direction(0, -1),   // 上
+                    new Direction(1, -1),   // 右上
+                    new Direction(1, 0),    // 右
+                    new Direction(1, 1),    // 右下
+                    new Direction(0, 1),    // 下
+                    new Direction(-1, 1),   // 左下
+                    new Direction(-1, 0),   // 左
+                    new Direction(-1, -1)   // 左上
+                };
+
+                // 相手の石を挟む処理
+                for (Direction dir : directions) {
+                    int dx = dir.dx;
+                    int dy = dir.dy;
+                    int nx = col + dx;
+                    int ny = row + dy;
+
+                    while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && ban[nx][ny] == 3 - turn) {
+                        nx += dx;
+                        ny += dy;
+                    }
+
+                    if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && ban[nx][ny] == turn) {
+                        // 挟んだ石をひっくり返す
+                        nx -= dx;
+                        ny -= dy;
+
+                        while (nx != col || ny != row) {
+                            ban[nx][ny] = turn;
+                            nx -= dx;
+                            ny -= dy;
+                        }
+                    }
                 }
+
+                // 手番の変更
+                turn = 3 - turn;
             }
 
             // 再描画
