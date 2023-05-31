@@ -185,8 +185,6 @@ public class Reversi extends JPanel {
                     new Direction(-1, -1)   // 左上
                 };
 
-                boolean canPlace = false;
-
                 // 相手の石を挟む処理
                 for (Direction dir : directions) {
                     int dx = dir.dx;
@@ -201,7 +199,6 @@ public class Reversi extends JPanel {
 
                         while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
                             if (ban[nx][ny] == turn) {
-                                canPlace = true;
                                 // 挟んだ石をひっくり返す
                                 int mx = col + dx;
                                 int my = row + dy;
@@ -221,13 +218,10 @@ public class Reversi extends JPanel {
                         }
                     }
                 }
-
-                if (canPlace) {
-                    // 石を置く
-                    ban[col][row] = turn;
-                    // 手番の変更
-                    turn = 3 - turn;
-                }
+                // 石を置く
+                ban[col][row] = turn;
+                // 手番の変更
+                turn = 3 - turn;
             }
 
             // 再描画
