@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.Timer;
 
 public class Reversi extends JPanel {
     static final int WIDTH = 1000; // 画面サイズ（幅）
@@ -9,6 +10,10 @@ public class Reversi extends JPanel {
     int tm = 200; // 上側余白
     int cs = 100; // マスのサイズ
     int turn = 1; // 手番（1:黒，2:白)
+    private Timer timer; // タイマーオブジェクト
+    private long elapsedTime; // 経過時間（ミリ秒単位）
+    private long startTime; // 開始時間を記録する変数
+
 
     int ban[][] = {
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -27,6 +32,18 @@ public class Reversi extends JPanel {
     public Reversi() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         addMouseListener(new MouseProc());
+
+        // タイマーオブジェクトを初期化
+        timer = new Timer(1000, e -> {
+            elapsedTime = System.currentTimeMillis() - startTime;
+            repaint(); // 描画を更新
+        });
+
+        // タイマーを開始
+        timer.start();
+
+        // ゲームの開始時間を記録
+        startTime = System.currentTimeMillis();
     }
 
     // 画面描画
@@ -46,6 +63,13 @@ public class Reversi extends JPanel {
         }
         g.setFont(new Font("SansSerif", Font.BOLD, 50));
         g.drawString(turnInfo, 50, 150);
+
+
+        // 経過時間を表示
+        g.setFont(new Font("SansSerif", Font.BOLD, 40));
+        g.setColor(Color.yellow);
+        g.drawString("経過時間: " + elapsedTime / 1000 + "秒", 400, 50);
+
 
         // 盤面描画
         for (int i = 0; i < 8; i++) {
