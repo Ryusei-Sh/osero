@@ -76,7 +76,29 @@ public class Reversi extends JPanel {
                 }
             }
         }
-    }
+        // 現在の石の獲得数
+        int blackCount = 0;
+        int whiteCount = 0;
+
+        // 石の個数を数える
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (ban[i][j] == 1) {
+                    blackCount++;
+                } else if (ban[i][j] == 2) {
+                    whiteCount++;
+                }
+            }
+        }
+
+        // フォントと位置を設定して石の個数を表示
+        g.setFont(new Font("SansSerif", Font.BOLD, 40));
+        g.setColor(Color.black);
+        g.drawString("黒石の個数: " + blackCount, WIDTH - 300, 100);
+        g.setColor(Color.white);
+        g.drawString("白石の個数: " + whiteCount, WIDTH - 300, 150);
+        
+        }
 
 
     // 指定されたマスに石を置けるかどうかを判定するメソッド
