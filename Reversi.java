@@ -12,14 +12,7 @@ public class Reversi extends JPanel {
     int cs = 50;    // マスのサイズ
     int turn = 1; // 手番（1:黒，2:白)
  
-    int[][] ban = {{0,0,0,0,0,0,0,0},
-                   {0,0,0,0,0,0,0,0},
-                   {0,0,0,0,0,0,0,0},
-                   {0,0,0,1,2,0,0,0},
-                   {0,0,0,2,1,0,0,0},
-                   {0,0,0,0,0,0,0,0},
-                   {0,0,0,0,0,0,0,0},
-                   {0,0,0,0,0,0,0,0}};// 盤面
+    int ban[] = {0,0,0,1,2,0,0,0}; // 盤面
  
     // コンストラクタ（初期化処理）
     public Reversi() {
@@ -34,24 +27,21 @@ public class Reversi extends JPanel {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         // 盤面描画
         int y = tm;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++) {
             int x = lm + cs * j;
             g.setColor(new Color(0, 170, 0));
             g.fillRect(x, y, cs, cs);
             g.setColor(Color.black);
             g.drawRect(x, y, cs, cs);
-                if (ban[i][j] != 0) {
-                    if (ban[i][j] == 1) {
-                        g.setColor(Color.black);
-                    } else {
-                        g.setColor(Color.white);
-                    }
-                    g.fillOval(x+cs/10, y+cs/10, cs*8/10, cs*8/10);
+            if (ban[j] != 0) {
+                if (ban[j] == 1) {
+                    g.setColor(Color.black);
+                } else {
+                    g.setColor(Color.white);
                 }
+                g.fillOval(x+cs/10, y+cs/10, cs*8/10, cs*8/10);
             }
         }
-        
     }
  
     // クリックされた時の処理用のクラス
@@ -66,10 +56,9 @@ public class Reversi extends JPanel {
             if (y >= tm+cs) return;
             // クリックされたマスを特定
             int col = (x - lm) / cs;
-            int row = (x - lm) / cs;
-            if (ban[row][col] == 0) {
+            if (ban[col] == 0) {
                 // 黒コマを置く
-                ban[row][col] = turn;
+                ban[col] = turn;
                 // 手番の変更
                 if (turn == 1) {
                     turn = 2;
