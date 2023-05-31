@@ -33,6 +33,18 @@ public class Reversi extends JPanel {
         g.setColor(Color.gray);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
+        // ターン情報の表示
+        String turnInfo;
+        if (turn == 1) {
+            turnInfo = "黒石のターン";
+            g.setColor(Color.black);
+        } else {
+            turnInfo = "白石のターン";
+            g.setColor(Color.white);
+        }
+        g.setFont(new Font("SansSerif", Font.BOLD, 50));
+        g.drawString(turnInfo, 30, 100);
+
         // 盤面描画
         for (int i = 0; i < 8; i++) {
             int x = lm + cs * i;
@@ -55,7 +67,7 @@ public class Reversi extends JPanel {
                 if (ban[i][j] == 0 && canPlace(i, j)) {
                     // 相手の石をひっくり返せるマスに「＊」マークを表示
                     g.setColor(Color.WHITE);
-                    g.setFont(new Font("Arial", Font.BOLD, 30));
+                    g.setFont(new Font("SansSerif", Font.BOLD, 30));
                     g.drawString("＊", x + cs / 2 - 10, y + cs / 2 + 10);
                 }
             }
