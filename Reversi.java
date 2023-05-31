@@ -67,6 +67,7 @@ public class Reversi extends JPanel {
         }
     }
 
+
     // クリックされた時の処理用のクラス
     class MouseProc extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
@@ -83,9 +84,6 @@ public class Reversi extends JPanel {
             int row = (y - tm) / cs;
 
             if (ban[col][row] == 0) {
-                // 石を置く
-                ban[col][row] = turn;
-
                 // 石を挟む方向の定義
                 Direction[] directions = {
                     new Direction(0, -1),   // 上
@@ -98,6 +96,8 @@ public class Reversi extends JPanel {
                     new Direction(-1, -1)   // 左上
                 };
 
+                boolean canPlace = false;
+
                 // 相手の石を挟む処理
                 for (Direction dir : directions) {
                     int dx = dir.dx;
@@ -105,32 +105,47 @@ public class Reversi extends JPanel {
                     int nx = col + dx;
                     int ny = row + dy;
 
-                    while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && ban[nx][ny] == 3 - turn) {
+                    if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && ban[nx][ny] == 3 - turn) {
+                        // 相手の石が隣接している場合のみ挟める可能性がある
                         nx += dx;
                         ny += dy;
-                    }
 
-                    if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && ban[nx][ny] == turn) {
-                        // 挟んだ石をひっくり返す
-                        nx -= dx;
-                        ny -= dy;
+                        while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                            if (ban[nx][ny] == turn) {
+                                canPlace = true;
+                                // 挟んだ石をひっくり返す
+                                int mx = col + dx;
+                                int my = row + dy;
 
-                        while (nx != col || ny != row) {
-                            ban[nx][ny] = turn;
-                            nx -= dx;
-                            ny -= dy;
+                                while (mx != nx || my != ny) {
+                                    ban[mx][my] = turn;
+                                    mx += dx;
+                                    my += dy;
+                                }
+                                break;
+                            } else if (ban[nx][ny] == 0) {
+                                break;
+                            }
+
+                            nx += dx;
+                            ny += dy;
                         }
                     }
                 }
 
-                // 手番の変更
-                turn = 3 - turn;
+                if (canPlace) {
+                    // 石を置く
+                    ban[col][row] = turn;
+                    // 手番の変更
+                    turn = 3 - turn;
+                }
             }
 
             // 再描画
             repaint();
         }
     }
+
 
     // 起動時
     public static void main(String[] args) {
